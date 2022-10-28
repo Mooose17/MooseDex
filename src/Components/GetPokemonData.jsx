@@ -1,27 +1,26 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore"; 
-import db from '../firebase'
-import PokemonContext from '../Contexts/PokemonContext'
+import { collection, getDocs } from "firebase/firestore";
+import db from "../firebase";
+import SearchPokemonById from "./SearchPokemonById";
 
-const GetPokemonData = () =>{
-    const [pokemon, setPokemon] = useState([])
+const GetPokemonData = () => {
+  const [pokemon, setPokemon] = useState([]);
 
-    useEffect(()=>{
+  useEffect(() => {
     async function fetchData() {
-        const pokemonRes = []
-        const pokemonDataSnapshot = await getDocs(collection(db,"pokemon-kanto-gen-1"));
-        pokemonDataSnapshot.forEach((doc)=> {
-          pokemonRes.push((doc.data()))
-        })
-        setPokemon(pokemonRes)
-      }
-      fetchData();
-    },[])
+      const pokemonRes = [];
+      const pokemonDataSnapshot = await getDocs(
+        collection(db, "pokemon-kanto-gen-1")
+      );
+      pokemonDataSnapshot.forEach((doc) => {
+        pokemonRes.push(doc.data());
+      });
+      setPokemon(pokemonRes);
+    }
+    fetchData();
+  }, []);
 
-    return (
-        <PokemonContext.Provider value={{pokemon,setPokemon}}>
-        </PokemonContext.Provider>
-    )
-}
+  return <SearchPokemonById />;
+};
 
-export default GetPokemonData
+export default GetPokemonData;
