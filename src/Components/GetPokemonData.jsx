@@ -20,7 +20,11 @@ const GetPokemonData = () => {
     fetchData();
   }, []);
 
-  return <SearchPokemonById />;
+  return (
+    <div>
+      <SearchPokemonById />
+    </div>
+  );
 };
 
 export default GetPokemonData;
