@@ -5,13 +5,14 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 const SearchPokemonById = () => {
   const [userInput, setUserInput] = useState("");
   const pokemonRef = collection(db, "pokemon-kanto-gen-1");
+  const [dataFromQuery, setDataFromQuery] = useState([]);
 
   const fetchQueryData = async () => {
     const idQuery = query(pokemonRef, where("id", "==", parseInt(userInput)));
     const querySnapshot = await getDocs(idQuery);
-    console.log(querySnapshot);
     querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
+      setDataFromQuery(doc.data());
+      console.log(dataFromQuery);
     });
   };
 
@@ -21,20 +22,29 @@ const SearchPokemonById = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Poké ID:
-          <input
-            type="text"
-            name="name"
-            value={userInput}
-            onChange={(event) => setUserInput(event.target.value)}
-          />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-    </div>
+    <>
+      <div>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Poké ID:
+            <input
+              type="text"
+              name="name"
+              value={userInput}
+              onChange={(event) => setUserInput(event.target.value)}
+            />
+          </label>
+          <input type="submit" value="Submit" />
+        </form>
+      </div>
+      <div>
+        <h2>Results:</h2>
+        <p>
+          {dataFromQuery.name}
+          {dataFromQuery.type}
+        </p>
+      </div>
+    </>
   );
 };
 
